@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+        <p>Track user data and their activities.</p>
+
+        {% if users_data %}
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Files Uploaded</th>
+                        <th>Assignments Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users_data %}
+                        <tr>
+                            <td>{{ user[0] }}</td>
+                            <td>{{ user[1] }}</td>
+                            <td>{{ user[2] }}</td>
+                            <td>{{ user[3] }}</td>
+                            <td>{{ user[4] }}</td>
+                            <td>{{ user[5] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No user data found.</p>
+        {% endif %}
+    </div>
+{% endblock %}
