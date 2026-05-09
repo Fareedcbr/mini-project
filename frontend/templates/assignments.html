@@ -1,0 +1,19 @@
+<!-- filepath: c:\Git Hub\intership\Online Assignment Submission Management System\templates\assignments.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Assignments</h2>
+        {% if assignments %}
+            <ul>
+                {% for assignment in assignments %}
+                    <li>
+                        <strong>{{ assignment[1] }}</strong>: {{ assignment[2] }} (Due: {{ assignment[3] }})
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No assignments found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

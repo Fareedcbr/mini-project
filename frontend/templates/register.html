@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Register</h2>
+
+    <form action="{{ url_for('register') }}" method="POST">
+        <!-- Role selection first -->
+        <label for="role">Register as:</label>
+        <select id="role" name="role" required>
+            <option value="" disabled selected>Select your role</option>
+            <option value="student">Student</option>
+            <option value="instructor">Instructor</option>
+            <option value="admin">Admin</option>
+        </select><br><br>
+
+        <!-- The rest of the form, hidden initially -->
+        <div id="additional_fields" style="display: none;">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <!-- Course dropdown only for students -->
+            <label for="course_id" id="course_label" style="display: none;">Course:</label>
+            <select id="course_id" name="course_id" style="display: none;">
+                {% for course in courses %}
+                    <option value="{{ course[0] }}">{{ course[1] }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <button type="submit">Register</button>
+        </div>
+    </form>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<!-- JavaScript to handle showing/hiding fields -->
+<script>
+    const roleDropdown = document.getElementById('role');
+    const additionalFields = document.getElementById('additional_fields');
+    const courseLabel = document.getElementById('course_label');
+    const courseDropdown = document.getElementById('course_id');
+
+    roleDropdown.addEventListener('change', function() {
+        // Show rest of the form after selecting a role
+        additionalFields.style.display = 'block';
+
+        // Show course dropdown only for students
+        if (this.value === 'student') {
+            courseLabel.style.display = 'block';
+            courseDropdown.style.display = 'block';
+        } else {
+            courseLabel.style.display = 'none';
+            courseDropdown.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
