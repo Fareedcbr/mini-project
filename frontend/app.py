@@ -12,17 +12,25 @@ app = Flask(
     __name__,
     template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 )
-app.secret_key = 'fareed'
+app.secret_key = os.environ.get('SECRET_KEY', 'fareed')
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_TYPE'] = 'filesystem'
+UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', os.path.join(os.getcwd(), 'uploads'))
 
 # MySQL connection setup
 try:
+    db_host = os.environ.get('DB_HOST', 'localhost')
+    db_user = os.environ.get('DB_USER', 'root')
+    db_password = os.environ.get('DB_PASSWORD', 'root')
+    db_name = os.environ.get('DB_NAME', 'assignment_db')
+    db_port = int(os.environ.get('DB_PORT', '3306'))
+
     db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",  # Replace with your password
-        database="assignment_db"
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database=db_name,
+        port=db_port
     )
     cursor = db.cursor()
     print("Database connection successful!")
@@ -168,7 +176,7 @@ def upload_file():
 
     if file and assignment_id:
         filename = file.filename
-        upload_folder = os.path.join(os.getcwd(), 'uploads')
+        upload_folder = UPLOAD_FOLDER
         os.makedirs(upload_folder, exist_ok=True)
         file_path = os.path.join(upload_folder, filename)
         file.save(file_path)
@@ -453,4 +461,8 @@ def admin_dashboard():
     return render_template('admin_dashboard.html', users_data=users_data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(
+        host='0.0.0.0',
+        port=int(os.environ.get('PORT', 5000)),
+        debug=os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
+    )
