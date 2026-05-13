@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Grade Overview</h2>
+        {% if grade_rows %}
+            <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Course ID</th>
+                        <th>Assignment</th>
+                        <th>Due Date</th>
+                        <th>File</th>
+                        <th>Score</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in grade_rows %}
+                        <tr>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                            <td>{{ row[5] }}</td>
+                            <td>
+                                {% if row[6] %}
+                                    {{ row[6] }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ row[7] }}</td>
+                            <td>{{ row[8] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No grades recorded yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

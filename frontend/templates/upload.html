@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Upload Assignment</h2>
+
+        <h3>Your Assignments</h3>
+        {% if assignments %}
+            <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Description</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>File</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                        <tr>
+                            <td>{{ assignment[1] }}</td>
+                            <td>{{ assignment[2] }}</td>
+                            <td>{{ assignment[3] }}</td>
+                            <td>{{ 'Submitted' if assignment[4] else 'Pending' }}</td>
+                            <td>
+                                {% if assignment[4] %}
+                                    {{ assignment[5] }}<br>
+                                    <a href="{{ url_for('view_upload', file_id=assignment[4]) }}" target="_blank" class="btn btn-secondary">View</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ assignment[6] if assignment[6] is not none else 'Not graded' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No assignments are currently available for your course.</p>
+        {% endif %}
+
+        <h3>Upload or Update Your Submission</h3>
+        <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <label for="assignment_id">Select Assignment:</label>
+            <select id="assignment_id" name="assignment_id" required>
+                {% if assignments %}
+                    {% for assignment in assignments %}
+                        <option value="{{ assignment[0] }}">{{ assignment[1] }} (Due: {{ assignment[3] }})</option>
+                    {% endfor %}
+                {% else %}
+                    <option disabled>No assignments available</option>
+                {% endif %}
+            </select><br><br>
+
+            <label for="file">Choose File:</label>
+            <input type="file" id="file" name="file" required><br><br>
+            <button type="submit">Upload / Update</button>
+        </form>
+
+        <h3>Your Submissions</h3>
+        {% if submitted_files %}
+            <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Assignment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in submitted_files %}
+                        <tr>
+                            <td>{{ file[1] }}</td>
+                            <td>{{ file[3] }}</td>
+                            <td>
+                                <a href="{{ url_for('view_upload', file_id=file[0]) }}" target="_blank" class="btn btn-secondary">View</a>
+                                <a href="{{ url_for('download_file', filename=file[1]) }}" class="btn btn-secondary">Download</a>
+                                <a href="{{ url_for('edit_upload', file_id=file[0]) }}" class="btn btn-primary">Update</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No files uploaded yet.</p>
+        {% endif %}
+
+        <h3>Your Grades</h3>
+        {% if grades %}
+            <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Score</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for grade in grades %}
+                        <tr>
+                            <td>{{ grade[4] }}</td>
+                            <td>{{ grade[2] }}</td>
+                            <td>{{ grade[3] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No grades available yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

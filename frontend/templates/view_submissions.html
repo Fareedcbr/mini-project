@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Submissions for Assignment: {{ assignment[0] }}</h2>
+
+        {% if submissions %}
+            <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Submitted File</th>
+                        <th>Score</th>
+                        <th>Comments</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for submission in submissions %}
+                        <tr>
+                            <td>{{ submission[0] }}</td>
+                            <td>{{ submission[1] }}</td>
+                            <td>{{ submission[2] }}</td>
+                            <td>
+                                {% if submission[3] %}
+                                    {{ submission[3] }}
+                                {% else %}
+                                    Not submitted
+                                {% endif %}
+                            </td>
+                            <td>{{ submission[5] if submission[5] is not none else 'Not graded' }}</td>
+                            <td>{{ submission[6] if submission[6] else '-' }}</td>
+                            <td>
+                                {% if submission[3] %}
+                                    <a href="{{ url_for('view_upload', file_id=submission[4]) }}" target="_blank" class="btn btn-secondary">View</a> |
+                                {% endif %}
+                                <a href="{{ url_for('grade_student', student_id=submission[0]) }}" class="btn btn-secondary">Grade Student</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No submissions found.</p>
+        {% endif %}
+
+        <br>
+        <a href="{{ url_for('view_assignments') }}" class="btn">Back to Assignments</a>
+    </div>
+{% endblock %}

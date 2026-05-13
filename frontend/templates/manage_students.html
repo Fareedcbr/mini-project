@@ -6,12 +6,15 @@
 
         <h3>Student List</h3>
         {% if students %}
-            <table border="1">
+            <table border="1" cellpadding="6" cellspacing="0">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
-                        <th>Course ID</th>
+                        <th>Email</th>
+                        <th>Submitted Assignments</th>
+                        <th>Assignments</th>
+                        <th>Average Grade</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -21,9 +24,13 @@
                             <td>{{ student[0] }}</td>
                             <td>{{ student[1] }}</td>
                             <td>{{ student[2] }}</td>
+                            <td>{{ student[3] }}</td>
+                            <td>{{ student[4] }}</td>
+                            <td>{{ student[5] }}</td>
                             <td>
-                                <a href="{{ url_for('view_student', student_id=student[0]) }}">View</a> |
-                                <a href="{{ url_for('delete_student', student_id=student[0]) }}">Delete</a>
+                                <a href="{{ url_for('view_student', student_id=student[0]) }}" class="btn btn-secondary">View</a>
+                                <a href="{{ url_for('grade_student', student_id=student[0]) }}" class="btn btn-secondary">Grade</a>
+                                <a href="{{ url_for('delete_student', student_id=student[0]) }}" class="btn btn-secondary" onclick="return confirm('Delete this student?');">Delete</a>
                             </td>
                         </tr>
                     {% endfor %}

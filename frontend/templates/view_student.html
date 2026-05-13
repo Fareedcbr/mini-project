@@ -5,7 +5,34 @@
         <h2>Student Details</h2>
         {% if student %}
             <p><strong>Username:</strong> {{ student[0] }}</p>
-            <p><strong>Course ID:</strong> {{ student[1] }}</p>
+            <p><strong>Email:</strong> {{ student[1] }}</p>
+            <p><strong>Course ID:</strong> {{ student[2] }}</p>
+
+            <h3>Assigned Tasks</h3>
+            {% if student_assignments %}
+                <table border="1" cellpadding="6" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Due Date</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in student_assignments %}
+                            <tr>
+                                <td>{{ assignment[1] }}</td>
+                                <td>{{ assignment[2] }}</td>
+                                <td>{{ assignment[3] }}</td>
+                                <td>{{ assignment[4] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No assignments found for this student.</p>
+            {% endif %}
         {% else %}
             <p>Student not found.</p>
         {% endif %}

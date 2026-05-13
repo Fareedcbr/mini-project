@@ -16,12 +16,13 @@
         {% if 'user_id' in session %}
             {% if session['role'] == 'student' %}
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
-                <a href="{{ url_for('upload_file') }}">Upload Assignment</a>
+                <a href="{{ url_for('upload') }}">Upload Assignment</a>
                 <a href="{{ url_for('view_assignments') }}">Assignments</a>
             {% elif session['role'] == 'instructor' %}
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
                 <a href="{{ url_for('manage_students') }}">Manage Students</a>
                 <a href="{{ url_for('view_assignments') }}">Assignments</a>
+                <a href="{{ url_for('grade_overview') }}">Grades</a>
             {% elif session['role'] == 'admin' %}
                 <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
             {% endif %}

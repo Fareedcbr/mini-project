@@ -12,10 +12,18 @@
             <textarea id="description" name="description" required></textarea><br><br>
 
             <label for="due_date">Due Date:</label>
-            <input type="datetime-local" id="due_date" name="due_date" required><br><br>
+            <input type="date" id="due_date" name="due_date" required><br><br>
 
-            <label for="course_id">Course ID:</label>
-            <input type="number" id="course_id" name="course_id" required><br><br>
+            <label for="course_id">Course:</label>
+            <select id="course_id" name="course_id" required>
+                {% if courses %}
+                    {% for course in courses %}
+                        <option value="{{ course[0] }}">{{ course[1] }} (ID: {{ course[0] }})</option>
+                    {% endfor %}
+                {% else %}
+                    <option disabled>No courses available</option>
+                {% endif %}
+            </select><br><br>
 
             <button type="submit">Add Assignment</button>
         </form>

@@ -29,7 +29,7 @@
             <label for="course_id" id="course_label" style="display: none;">Course:</label>
             <select id="course_id" name="course_id" style="display: none;">
                 {% for course in courses %}
-                    <option value="{{ course[0] }}">{{ course[1] }}</option>
+                    <option value="{{ course[0] }}">{{ course[0] }} - {{ course[1] }}</option>
                 {% endfor %}
             </select><br><br>
 

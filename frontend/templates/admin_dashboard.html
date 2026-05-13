@@ -3,35 +3,119 @@
 {% block content %}
     <div class="container">
         <h2>Admin Dashboard</h2>
-        <p>Track user data and their activities.</p>
+        <p>All users, student uploads, grades and instructor activity.</p>
 
-        {% if users_data %}
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Files Uploaded</th>
-                        <th>Assignments Created</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users_data %}
+        <section>
+            <h3>All Users</h3>
+            {% if users_data %}
+                <table border="1" cellpadding="6" cellspacing="0">
+                    <thead>
                         <tr>
-                            <td>{{ user[0] }}</td>
-                            <td>{{ user[1] }}</td>
-                            <td>{{ user[2] }}</td>
-                            <td>{{ user[3] }}</td>
-                            <td>{{ user[4] }}</td>
-                            <td>{{ user[5] }}</td>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>No user data found.</p>
+                    </thead>
+                    <tbody>
+                        {% for user in users_data %}
+                            <tr>
+                                <td>{{ user[0] }}</td>
+                                <td>{{ user[1] }}</td>
+                                <td>{{ user[2] }}</td>
+                                <td>{{ user[3] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No user data available.</p>
+            {% endif %}
+        </section>
+
+        <details class="details-card" open>
+            <summary>Student Overview</summary>
+            {% if student_stats %}
+                <table border="1" cellpadding="6" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Uploaded Assignments</th>
+                            <th>Average Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in student_stats %}
+                            <tr>
+                                <td>{{ student[0] }}</td>
+                                <td>{{ student[1] }}</td>
+                                <td>{{ student[2] }}</td>
+                                <td>{{ student[3] }}</td>
+                                <td>{{ student[4] if student[4] else 'Not graded' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No student data available.</p>
+            {% endif %}
+        </details>
+
+        <details class="details-card">
+            <summary>Instructor Overview</summary>
+            {% if instructor_stats %}
+                <table border="1" cellpadding="6" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Instructor ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Assignments Created</th>
+                            <th>Credits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for instructor in instructor_stats %}
+                            <tr>
+                                <td>{{ instructor[0] }}</td>
+                                <td>{{ instructor[1] }}</td>
+                                <td>{{ instructor[2] }}</td>
+                                <td>{{ instructor[3] }}</td>
+                                <td>{{ instructor[4] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No instructor data available.</p>
+            {% endif %}
+        </details>
+
+        {% if incomplete_assignments %}
+            <details class="details-card">
+                <summary>Assignments Missing Instructor Link</summary>
+                <p>These assignments do not currently have an instructor associated. They may still be counted incorrectly until fixed.</p>
+                <table border="1" cellpadding="6" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Assignment ID</th>
+                            <th>Title</th>
+                            <th>Course ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in incomplete_assignments %}
+                            <tr>
+                                <td>{{ assignment[0] }}</td>
+                                <td>{{ assignment[1] }}</td>
+                                <td>{{ assignment[2] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </details>
         {% endif %}
     </div>
 {% endblock %}
